@@ -18,44 +18,44 @@ app.MapHttp2Tunnel("/_yarp-tunnel")
     .Add(builder =>
     {
         var previous = builder.RequestDelegate;
+        
+        //builder.RequestDelegate = async context =>
+        //{
+        //    if (!context.Request.Headers.TryGetValue(HeaderNames.Authorization, out var token) ||
+        //        token.Count != 1 ||
+        //        !ValidateTunnelAuthorizationHeader(token.ToString()))
+        //    {
+        //        context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+        //        return;
+        //    }
 
-        builder.RequestDelegate = async context =>
-        {
-            if (!context.Request.Headers.TryGetValue(HeaderNames.Authorization, out var token) ||
-                token.Count != 1 ||
-                !ValidateTunnelAuthorizationHeader(token.ToString()))
-            {
-                context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                return;
-            }
+        //    if (previous is not null)
+        //    {
+        //        await previous(context);
+        //    }
 
-            if (previous is not null)
-            {
-                await previous(context);
-            }
+        //    static bool ValidateTunnelAuthorizationHeader(string value)
+        //    {
+        //        string expected = "Secret";
 
-            static bool ValidateTunnelAuthorizationHeader(string value)
-            {
-                string expected = "Secret";
+        //        return Equals(value, expected);
+        //    }
 
-                return Equals(value, expected);
-            }
+        //    static bool Equals(string a, string b)
+        //    {
+        //        if (a.Length != b.Length) return false;
 
-            static bool Equals(string a, string b)
-            {
-                if (a.Length != b.Length) return false;
+        //        int diff = 0;
 
-                int diff = 0;
+        //        for (int i = 0; i < a.Length; i++)
+        //        {
+        //            diff |= a[i] ^ b[i];
+        //        }
 
-                for (int i = 0; i < a.Length; i++)
-                {
-                    diff |= a[i] ^ b[i];
-                }
+        //        return diff == 0;
+        //    }
 
-                return diff == 0;
-            }
-
-        };
+        //};
     });
 
 app.MapReverseProxy();
